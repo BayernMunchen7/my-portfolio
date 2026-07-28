@@ -5,7 +5,12 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-
+    
+permissions: 
+      contents: read
+      pages: write
+      id-token: write
+      
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
@@ -24,3 +29,14 @@ jobs:
 
       - name: 빌드 실행
         run: npm run build
+deploy: 
+  needs: test-and-build
+  if: github.ref == 'refs/heads/main'
+  runs-on: ubuntu-latest
+  environment:
+    name: github-pages
+    url: ${{ steps.deployment.outputs.page_url }}
+  steps:
+    - name: GitHub Pages에 배포
+      id: deployment
+      uses: actions/deploy-pages@v4
