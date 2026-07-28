@@ -29,6 +29,11 @@ jobs:
 
       - name: 빌드 실행
         run: npm run build
+
+      - name: Pages 아티팩트 업로드
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./
   deploy: 
     needs: test-and-build
     if: github.ref == 'refs/heads/main'
